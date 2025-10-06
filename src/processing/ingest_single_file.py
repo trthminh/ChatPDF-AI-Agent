@@ -15,6 +15,7 @@ from src.utils import get_current_hcm_time_iso
 from src.config import *
 def process_and_ingest_single_pdf(file_path: str, space_id: str, owner_id: str):
     filename = os.path.basename(file_path)
+    filename = filename.replace(" ", "_") # for sql
     file_size = os.path.getsize(file_path)
     now = get_current_hcm_time_iso()
     doc_id = f"doc_{uuid.uuid4().hex[:8]}"
@@ -39,7 +40,6 @@ def process_and_ingest_single_pdf(file_path: str, space_id: str, owner_id: str):
         loader = PyPDFLoader(file_path)
         docs = loader.load()
         for doc in docs:
-            filename = filename.replace(" ", "_") # for sql
             doc.metadata["source"] = filename
 
             doc.metadata["doc_id"] = doc_id
