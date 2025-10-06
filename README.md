@@ -11,7 +11,7 @@ The agent is context-aware, handles user permissions, and provides a simple web 
 You can see demo at here (https://drive.google.com/file/d/1r9Jo9a-cvtfpxUQgRwkSuzrGBVvaxJ08/view?usp=sharing)
 ## Features
 
-- **Dual-Tool AI Agent:** Automatically routes questions to the correct tool (RAG or Text-to-SQL).
+- **ReAct-Powered Agent**: Utilizes the ReAct (Reasoning and Acting) framework to dynamically choose between RAG for content search and Text-to-SQL for metadata queries.
 - **Conversational Memory:** Understands the context of the conversation (e.g., knows which file was just uploaded).
 - **Permission System:** Users can only access data and documents they are authorized to see.
 - **Vector Database:** Uses FAISS for efficient semantic search on PDF content.
