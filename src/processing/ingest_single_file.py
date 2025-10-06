@@ -46,6 +46,9 @@ def process_and_ingest_single_pdf(file_path: str, space_id: str, owner_id: str):
 
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
         chunks = text_splitter.split_documents(docs)
+        for chunk in chunks:
+            source_file = chunk.metadata.get("source", "unknown_source")
+            chunk.page_content = f"File name: {source_file}. Nội dung: {chunk.page_content}"
 
         embeddings = GoogleGenerativeAIEmbeddings(model=EMBEDDING_MODEL_NAME, google_api_key=GOOGLE_API_KEY)
         vector_store = FAISS.load_local(VECTOR_STORE_PATH, embeddings, allow_dangerous_deserialization=True)

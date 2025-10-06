@@ -7,6 +7,7 @@ load_dotenv()
 EMBEDDING_MODEL_NAME = "models/gemini-embedding-001"
 MODEL_NAME = "gemini-2.5-flash"
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+COHERE_API_KEY = os.getenv('COHERE_API_KEY')
 
 # --- Path Configs ---
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

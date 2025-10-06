@@ -50,6 +50,7 @@ pip install -r requirements.txt
 ```
 **3. Set up your API Key**
 - Get a free Google API Key from Google AI Studio.
+- Get a free Cohere API Key from (https://dashboard.cohere.com/api-keys)
 - Create file .env.
 - Open the .env file and paste your API key:
 ```bash

@@ -8,6 +8,8 @@ from langchain_community.vectorstores import FAISS
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
+from langchain.retrievers import ContextualCompressionRetriever
+from langchain_cohere import CohereRerank
 import sqlite3
 from src.config import *
 
@@ -15,7 +17,11 @@ class RAGTool:
     def __init__(self, vector_store_path=VECTOR_STORE_PATH):
         if not GOOGLE_API_KEY:
             raise ValueError("GOOGLE_API_KEY not found in environment variables.")
+        if not COHERE_API_KEY:
+            raise ValueError("COHERE_API_KEY not found in environment variables.")
         
+        self.reranker = CohereRerank(cohere_api_key=COHERE_API_KEY, top_n=5, model="rerank-v3.5")
+
         self.embeddings = GoogleGenerativeAIEmbeddings(
             model=EMBEDDING_MODEL_NAME,
             google_api_key=GOOGLE_API_KEY
@@ -27,6 +33,16 @@ class RAGTool:
             temperature=0,
             convert_system_message_to_human=True
         )
+
+        # base_retriever = self.vector_store.as_retriever(
+        #     search_kwargs={"k": 25}
+        # )
+
+        # self.compression_retriever = ContextualCompressionRetriever(
+        #     base_compressor=reranker, 
+        #     base_retriever=base_retriever
+        # )
+
         self.chain = self._build_chain()
         print("Initialize RAG Tool successful!")
 
@@ -94,26 +110,51 @@ class RAGTool:
         if not accessible_sources:
             return "You do not have access to any documents, or no relevant documents were found."
         
-        retriever = self.vector_store.as_retriever(
-            search_kwargs={
-                "k": 10,
-                "filter": {"source": accessible_sources}
-            }
+        # retriever = self.vector_store.as_retriever(
+        #     search_kwargs={
+        #         "k": 10,
+        #         "filter": {"source": accessible_sources}
+        #     }
+        # )
+
+        # print(retriever)
+        base_retriever = self.vector_store.as_retriever(
+            search_kwargs={"k": 25, "filter": {"source": accessible_sources}}
         )
 
-        print(retriever)
-
-        rag_chain = (
-            {"context": retriever | self._format_docs, "question": RunnablePassthrough()}
-            | self.chain
+        # 3. Gói retriever cơ bản với re-ranker
+        compression_retriever = ContextualCompressionRetriever(
+            base_compressor=self.reranker, 
+            base_retriever=base_retriever
         )
+
+        relevant_chunks = compression_retriever.invoke(question)
+        print(f"Found {len(relevant_chunks)} highly relevant chunks after re-ranking.")
+
+        if not relevant_chunks:
+            # ... (xử lý lỗi không tìm thấy chunk liên quan)
+            return "I could not find relevant information..."
+
+        context = self._format_docs(relevant_chunks)
+        
+        rag_chain = {
+            "context": lambda x: context,       # Cung cấp context đã được re-rank
+            "question": RunnablePassthrough()   # Truyền câu hỏi gốc vào
+        } | self.chain                # Pipe vào chain LLM đã tạo sẵn
+        
+        print("Generating final answer with re-ranked context...")
+
+        # rag_chain = (
+        #     {"context": retriever | self._format_docs, "question": RunnablePassthrough()}
+        #     | self.chain
+        # )
 
         response = rag_chain.invoke(question)
         return response
     
 if __name__ == '__main__':
     rag_tool = RAGTool()
-    question = "alice_01|id của hoá đơn trong file invoice-3-0.pdf là gì?"
+    question = "alice_01|tổng phí ship của hoá đơn trong file invoice_Trudy_Brown_17041.pdf là gì?"
     answer = rag_tool.answer(question)
     print("\n--- Test ---")
     print(f"Câu hỏi: {question}")
