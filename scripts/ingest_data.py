@@ -37,6 +37,9 @@ def split_documents(documents: List[Document]) -> List[Document]:
     )
     chunks = text_splitter.split_documents(documents)
     print(f"Split successfull {len(chunks)} chunks.")
+    for chunk in chunks:
+        source_file = chunk.metadata.get("source", "unknown_source")
+        chunk.page_content = f"File name: {source_file}. Nội dung: {chunk.page_content}"
     return chunks
 
 def create_and_save_vector_store(chunks: List[Document], save_path: str):    

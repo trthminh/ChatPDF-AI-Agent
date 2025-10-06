@@ -101,6 +101,8 @@ class RAGTool:
             }
         )
 
+        print(retriever)
+
         rag_chain = (
             {"context": retriever | self._format_docs, "question": RunnablePassthrough()}
             | self.chain
@@ -109,10 +111,10 @@ class RAGTool:
         response = rag_chain.invoke(question)
         return response
     
-# if __name__ == '__main__':
-#     rag_tool = RAGTool()
-#     question = "bob_02|what is order id of invoice 18509?"
-#     answer = rag_tool.answer(question)
-#     print("\n--- Test ---")
-#     print(f"Câu hỏi: {question}")
-#     print(f"Câu trả lời: {answer}")
+if __name__ == '__main__':
+    rag_tool = RAGTool()
+    question = "alice_01|id của hoá đơn trong file invoice-3-0.pdf là gì?"
+    answer = rag_tool.answer(question)
+    print("\n--- Test ---")
+    print(f"Câu hỏi: {question}")
+    print(f"Câu trả lời: {answer}")
