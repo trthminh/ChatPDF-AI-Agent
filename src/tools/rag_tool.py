@@ -109,10 +109,10 @@ class RAGTool:
         response = rag_chain.invoke(question)
         return response
     
-if __name__ == '__main__':
-    rag_tool = RAGTool()
-    question = "bob_02|what is order id of invoice 18509?"
-    answer = rag_tool.answer(question)
-    print("\n--- Test ---")
-    print(f"Câu hỏi: {question}")
-    print(f"Câu trả lời: {answer}")
+# if __name__ == '__main__':
+#     rag_tool = RAGTool()
+#     question = "bob_02|what is order id of invoice 18509?"
+#     answer = rag_tool.answer(question)
+#     print("\n--- Test ---")
+#     print(f"Câu hỏi: {question}")
+#     print(f"Câu trả lời: {answer}")

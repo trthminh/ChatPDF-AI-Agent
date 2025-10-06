@@ -87,25 +87,25 @@ class TextToSQLTool:
         
         return final_answer
 
-if __name__ == '__main__':
-    sql_tool = TextToSQLTool()
+# if __name__ == '__main__':
+#     sql_tool = TextToSQLTool()
 
-    # question1 = "How many users are there?"
-    # answer1 = sql_tool.execute(question1)
-    # print("\n--- Test 1 ---")
-    # print(f"Câu hỏi: {question1}")
-    # print(f"Câu trả lời: {answer1}")
+#     # question1 = "How many users are there?"
+#     # answer1 = sql_tool.execute(question1)
+#     # print("\n--- Test 1 ---")
+#     # print(f"Câu hỏi: {question1}")
+#     # print(f"Câu trả lời: {answer1}")
     
-    # Test câu hỏi 2
-    question2 = "bob_02|Which workspace was updated most recently?"
-    answer2 = sql_tool.execute(question2)
-    print("\n--- Test 2 ---")
-    print(f"Câu hỏi: {question2}")
-    print(f"Câu trả lời: {answer2}")
+#     # Test câu hỏi 2
+#     question2 = "bob_02|Which workspace was updated most recently?"
+#     answer2 = sql_tool.execute(question2)
+#     print("\n--- Test 2 ---")
+#     print(f"Câu hỏi: {question2}")
+#     print(f"Câu trả lời: {answer2}")
 
-    # Test câu hỏi 3
-    question3 = "bob_02|List all spaces in the 'Accounting' workspace."
-    answer3 = sql_tool.execute(question3)
-    print("\n--- Test 3 ---")
-    print(f"Câu hỏi: {question3}")
-    print(f"Câu trả lời: {answer3}")
+#     # Test câu hỏi 3
+#     question3 = "bob_02|List all spaces in the 'Accounting' workspace."
+#     answer3 = sql_tool.execute(question3)
+#     print("\n--- Test 3 ---")
+#     print(f"Câu hỏi: {question3}")
+#     print(f"Câu trả lời: {answer3}")
