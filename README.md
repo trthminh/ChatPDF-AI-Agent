@@ -14,6 +14,7 @@ You can see demo at here (https://drive.google.com/file/d/1r9Jo9a-cvtfpxUQgRwkSu
 - **ReAct-Powered Agent**: Utilizes the ReAct (Reasoning and Acting) framework to dynamically choose between RAG for content search and Text-to-SQL for metadata queries.
 - **Conversational Memory:** Understands the context of the conversation (e.g., knows which file was just uploaded).
 - **Permission System:** Users can only access data and documents they are authorized to see.
+- **Re-ranking** methods to increase the relevance of retrieved results.
 - **Vector Database:** Uses FAISS for efficient semantic search on PDF content.
 - **Metadata Database:** Uses SQLite to manage users, files, and permissions.
 - **File Upload:** Users can upload new PDF documents into their workspaces.
