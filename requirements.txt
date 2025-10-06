@@ -1,0 +1,11 @@
+langchain
+langchain-community
+langchain-core
+pypdf
+faiss-cpu
+python-dotenv
+streamlit
+google-generativeai
+langchain-google-genai
+sqlalchemy
+langchain-experimental
